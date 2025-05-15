@@ -25,7 +25,7 @@ export async function GET() {
       (article: Record<string, any>) => article.source?.language === 'en'
     );
 
-    const sortedArticles = englishArticles.sort((a, b) => {
+    const sortedArticles = englishArticles.sort((a: any, b: any) => {
       const aScore = a.fb_data?.total_engagement_count || 0;
       const bScore = b.fb_data?.total_engagement_count || 0;
       return bScore - aScore;
