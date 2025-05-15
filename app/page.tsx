@@ -42,7 +42,7 @@ export default function AINewsDashboard() {
 
       {!loading && !error && articles.length > 0 && (
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {articles.map((story: any, index: number) => (
+          {articles.map((story: Record<string, any>, index: number) => (
             <Card
               key={index}
               className="group rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col"

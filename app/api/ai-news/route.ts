@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const API_KEY = '1AXp4gLH3VaN4';
   const API_URL = 'https://api.newswhip.com/v1/search';
 
@@ -14,21 +14,21 @@ export async function GET(req: NextRequest) {
     start,
     end,
     limit: '100',
-    sort: 'facebook'
+    sort: 'facebook',
   });
 
   try {
     const response = await fetch(`${API_URL}?${queryParams.toString()}`);
     const data = await response.json();
 
-    const englishArticles = data.articles?.filter(
-      (article: any) => article.source?.language === 'en'
-    ) || [];
+    const englishArticles = (data.articles || []).filter(
+      (article: Record<string, any>) => article.source?.language === 'en'
+    );
 
-    const sortedArticles = englishArticles.sort((a: any, b: any) => {
-      const aEngagement = a.fb_data?.total_engagement_count || 0;
-      const bEngagement = b.fb_data?.total_engagement_count || 0;
-      return bEngagement - aEngagement;
+    const sortedArticles = englishArticles.sort((a, b) => {
+      const aScore = a.fb_data?.total_engagement_count || 0;
+      const bScore = b.fb_data?.total_engagement_count || 0;
+      return bScore - aScore;
     });
 
     return NextResponse.json({ articles: sortedArticles });
